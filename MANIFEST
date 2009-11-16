@@ -1,0 +1,12 @@
+Changes
+lib/Acme/CommentChanger.pm
+lib/Acme/CommentTeller.pm
+lib/Acme/BleachComment.pm
+Makefile.PL
+MANIFEST
+README
+
+t/00_pod.t
+t/01_use.t
+t/02_base.t
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,0 +1,15 @@
+--- #YAML:1.0
+name:                Acme-CommentChanger
+version:             0.01
+abstract:            change your source comment.
+license:             perl
+author:              
+    - Makamaka Hannyaharamitu, E<lt>makamaka[at]cpan.orgE<gt>
+generated_by:        ExtUtils::MakeMaker version 6.42
+distribution_type:   module
+requires:     
+    PPI:                           1.2
+    Test::More:                    0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3
