@@ -1,0 +1,24 @@
+Acme::CommentChanger version 0.01
+========================
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+
+DEPENDENCIES
+
+ Test::More
+ PPI
+
+COPYRIGHT AND LICENSE
+
+        Copyright (C) 2009 Makamaka Hannyaharamitu. All rights reserved.
+
+        This library is free software; you can redistribute it and/or modify
+        it under the same terms as Perl itself.
