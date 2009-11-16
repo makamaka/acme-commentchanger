@@ -16,9 +16,40 @@ DEPENDENCIES
  Test::More
  PPI
 
+NAME
+    Acme::CommentChanger - change your source comment.
+
+SYNOPSYS
+      package YourModule;
+      use strict;
+      use base qw( Acme::CommentChanger );
+
+      sub handler_token {
+          return sub {
+              my ( $self, $token ) = @_; # $token is PPI::Token::Comment
+              my $content = $token->content;
+
+              #
+              # ....
+              #
+
+              $token->set_content( $content );
+          }
+      }
+
+      #
+      package main;
+
+      my $changer = YourModule->new;
+      my $code    = 'your source code';
+
+      my $changed_code = $changer->change_code( $code );
+
+DESCRIPTION
+    A source code comments (#headed) changer.
+
 COPYRIGHT AND LICENSE
+    Copyright (C) 2009 Makamaka Hannyaharamitu.
 
-        Copyright (C) 2009 Makamaka Hannyaharamitu. All rights reserved.
-
-        This library is free software; you can redistribute it and/or modify
-        it under the same terms as Perl itself.
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
