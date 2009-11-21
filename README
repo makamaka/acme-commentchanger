@@ -23,33 +23,99 @@ SYNOPSYS
       package YourModule;
       use strict;
       use base qw( Acme::CommentChanger );
-
+  
       sub handler_token {
           return sub {
               my ( $self, $token ) = @_; # $token is PPI::Token::Comment
               my $content = $token->content;
-
+          
               #
               # ....
               #
-
+          
               $token->set_content( $content );
           }
       }
-
+  
       #
       package main;
-
+  
       my $changer = YourModule->new;
       my $code    = 'your source code';
-
+  
       my $changed_code = $changer->change_code( $code );
 
 DESCRIPTION
     A source code comments (#headed) changer.
+
+    You can rewrite handler methods to change comments simply.
+
+METHODS
+  new
+        $changer = $class->new( [ $hashref ] );
+
+    A constructor. It can take an optional hash reference.
+
+  change_code
+        $changer->change_code( $code [, $hashref] );
+
+    Takes a code and returns a changed code. It can take an optional hash
+    reference.
+
+  handle_token
+    It takes a PPI::Document object, an init handler, a token handler, a
+    finish handler and an optional hash reference.
+
+    This method is called by "change_code" internally. In many cases, you
+    don't need to call it directly.
+
+HANDLERS
+  handler_init
+    Called before handling comment tokens in "handle_token" method. It
+    return a subroutine reference which takes three arguments. The first
+    argument is an object itself. Second is a PPI::Document object. Last one
+    is a optional hash reference.
+
+        sub handler_init {
+            return sub {
+                my ( $self, $document, $opt ) = @_;
+                # ... your code
+            }
+        }
+
+  handler_token
+    Called after "handler_init". It returns a subroutine reference which
+    takes two arguments. The first argument is an object itself. Second is a
+    PPI::Token::Comment object.
+
+        sub handler_token {
+            return sub {
+                my ( $self, $token ) = @_;
+                my $content = $token->content; # comment text
+                # ... you code
+                $token->set_content( $content ); # set a new text
+            }
+        }
+
+  handler_finish
+    Called after all comment tokens are handled. It return a subroutine
+    reference which takes three arguments. The first argument is an object
+    itself. Second is a PPI::Document object. This subroutine reference must
+    return a PPI::Document content.
+
+        sub handler_finish {
+            sub {
+                my ( $self, $document ) = @_;
+                return $document->content;
+            };
+        }
+
+SEE ALSO
+    Acme::MorseComments, PPI
 
 COPYRIGHT AND LICENSE
     Copyright (C) 2009 Makamaka Hannyaharamitu.
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
+
