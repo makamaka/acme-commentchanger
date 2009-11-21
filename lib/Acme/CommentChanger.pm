@@ -7,7 +7,7 @@ use warnings;
 use PPI;
 use Carp ();
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
     my ( $class, $opt ) = @_;
@@ -18,7 +18,7 @@ sub new {
 
 sub create_ppi_document {
     my ( $self, $code, $opt ) = @_;
-    my $document = PPI::Document->new( \$code ) or Carp::croak( PPI::Document->errstr );
+    PPI::Document->new( \$code ) or die PPI::Document->errstr;
 }
 
 
@@ -135,6 +135,82 @@ Acme::CommentChanger - change your source comment.
 
 A source code comments (#headed) changer.
 
+You can rewrite handler methods to change comments simply.
+
+
+=head1 METHODS
+
+=head2 new
+
+    $changer = $class->new( [ $hashref ] );
+
+A constructor.
+It can take an optional hash reference.
+
+=head2 change_code
+
+    $changer->change_code( $code [, $hashref] );
+
+Takes a code and returns a changed code.
+It can take an optional hash reference.
+
+=head2 handle_token
+
+It takes a PPI::Document object, an init handler, a token handler, a finish handler
+and an optional hash reference.
+
+This method is called by C<change_code> internally.
+In many cases, you don't need to call it directly.
+
+
+=head1 HANDLERS
+
+=head2 handler_init
+
+Called before handling comment tokens in C<handle_token> method.
+It return a subroutine reference which takes three arguments.
+The first argument is an object itself. Second is a L<PPI::Document> object.
+Last one is a optional hash reference.
+
+    sub handler_init {
+        return sub {
+            my ( $self, $document, $opt ) = @_;
+            # ... your code
+        }
+    }
+
+=head2 handler_token
+
+Called after C<handler_init>.
+It returns a subroutine reference which takes two arguments.
+The first argument is an object itself. Second is a L<PPI::Token::Comment> object.
+
+    sub handler_token {
+        return sub {
+            my ( $self, $token ) = @_;
+            my $content = $token->content; # comment text
+            # ... you code
+            $token->set_content( $content ); # set a new text
+        }
+    }
+
+=head2 handler_finish
+
+Called after all comment tokens are handled.
+It return a subroutine reference which takes three arguments.
+The first argument is an object itself. Second is a L<PPI::Document> object.
+This subroutine reference must return a PPI::Document content.
+
+    sub handler_finish {
+        sub {
+            my ( $self, $document ) = @_;
+            return $document->content;
+        };
+    }
+
+=head1 SEE ALSO
+
+L<Acme::MorseComments>, L<PPI>
 
 =head1 COPYRIGHT AND LICENSE
 

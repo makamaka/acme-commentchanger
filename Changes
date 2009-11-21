@@ -1,4 +1,7 @@
 Revision history for Perl extension Acme::CommentChanger.
 
+0.02  Sat Nov 21 12:45:28 2009
+	- added eg/comment2story
+
 0.01  Mon Nov 16 13:34:30 2009
 	- initial release.

@@ -5,6 +5,7 @@ lib/Acme/BleachComment.pm
 Makefile.PL
 MANIFEST
 README
+eg/comment2story
 
 t/00_pod.t
 t/01_use.t

@@ -6,7 +6,7 @@ use base qw( Acme::CommentChanger );
 
 use Encode;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 my $IMPORT_MODE;
 
@@ -287,3 +287,58 @@ sub _sort_weight {
 1;
 __END__
 
+=pod
+
+=head1 NAME
+
+Acme::CommentTeller - replace source comments with another text.
+
+=head1 SYNOPSYS
+
+  use strict;
+  use Acme::CommentTeller  'another_text';
+
+  print "Hello World!\n"; # This is a great code!
+
+=head1 DESCRIPTION
+
+The first time you run a program under use Acme::CommentTeller with an argument,
+the module replace  all '#' headed commets with a specified file content.
+
+  use strict;
+
+  print "Hello World!\n"; # Foo Bar Foo Bar
+
+Acme::CommentTeller is removed.
+
+If used with no argument, no effective.
+
+=head1 METHODS
+
+
+
+=head2 new
+
+    $teller = Acme::CommentTeller->new;
+
+A constructor.
+
+=head2 change_comment_with_story
+
+    $teller->change_comment_with_story( $code, $story, $opt );
+
+Takes a code, a text for replacement and an optional hash reference.
+It returns a changed code.
+
+=head1 SEE ALSO
+
+L<Acme::CommentChanger>, L<PPI>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2009 Makamaka Hannyaharamitu.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. 
+
+=cut
