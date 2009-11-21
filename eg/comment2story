@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Acme::CommentTeller;
+use Getopt::Long;
+
+our $VERSION = '0.01';
+
+my ( $sourcefile, $insertfile ) = @ARGV;
+my $output;
+
+GetOptions(
+   "sourcefile=s"   => \$sourcefile,
+   "insertfile=s"   => \$insertfile,
+   "output=s"       => \$output,
+);
+
+
+print "Usage: $0 sourcefile storyfile\n" and exit unless ( $sourcefile and $insertfile  );
+
+
+my $asc = Acme::CommentTeller->new();
+
+local $/ = undef;
+
+open ( my $fh, "<:utf8", $insertfile ) or die "$!:$insertfile";
+
+my $story = <$fh>;
+close( $fh );
+
+open ( $fh, "<:utf8",$sourcefile ) or die "$!:$sourcefile";
+my $code = <$fh>;
+close( $fh );
+
+if ( $output ) {
+    my $changed = $asc->change_comment_with_story( $code, $story, { auto_width => 1 } );
+    open ( $fh, ">:utf8",$output ) or die "$!:$output";
+    print $fh $changed;
+    close( $fh );
+}
+else {
+    print Encode::encode_utf8 $asc->change_comment_with_story( $code, $story, { auto_width => 1 } );
+}
+
+
+__END__
